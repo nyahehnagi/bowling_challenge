@@ -26,7 +26,7 @@ TEN_PINS_DOWN = 10
     @frames.each do |frame_no, frame|
       if frame_no == LAST_FRAME
         score += process_frame(frame_no, frame)
-      elsif frame.complete?
+      elsif frame.frame_complete?
         score += process_frame(frame_no, frame)
       end
     end
@@ -57,7 +57,7 @@ private
   def new_frame?
     return true if @frames.empty?
     return false if @frames.count == LAST_FRAME
-    return true if @frames[@frames.keys.last].complete?
+    return true if @frames[@frames.keys.last].frame_complete?
     return false
   end
 
