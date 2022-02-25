@@ -7,17 +7,16 @@ class Frame
 
   def log_roll(score)
     @score += score
-
     @rolls[@rolls.count + 1] = calculate_score(score)
-    
-  end
 
-  def score
-    @score
   end
 
   def roll_score(roll)
     @rolls[roll]
+  end
+
+  def complete?
+    @rolls.count > 1 || roll_score(1) == :strike
   end
 
   private
@@ -41,5 +40,6 @@ class Frame
     return false if score == :strike
     @score == 10 && @rolls[1] < 10
   end
+
 
 end

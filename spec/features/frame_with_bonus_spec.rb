@@ -1,5 +1,3 @@
-require './lib/frame'
-
 
 describe "getting bonus on the frame" do
   it "scores a spare on the second roll" do
@@ -35,11 +33,8 @@ describe "getting bonus on the frame" do
     expect(frame.roll_score(3)).to eq :strike
   end
 
-  # it "scores zero on first roll, strikes on 2 rolls" do
-  #   frame = Frame.new()
-  #   frame.log_roll(10)
-  #   frame.log_roll(10)
-  #   expect(frame.roll_score(1)).to eq :strike
-  #   expect(frame.roll_score(2)).to eq :strike
-  # end
+  xit "raise an error if a 3rd ball is logged and no previous strikes or spare" do
+
+  end
+
 end
