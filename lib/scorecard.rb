@@ -59,14 +59,6 @@ class ScoreCard
     false
   end
 
-  def spare?(roll)
-    roll == :spare
-  end
-
-  def strike?(roll)
-    roll == :strike
-  end
-
   def strike_points(frame_no)
     if frame_no == LAST_FRAME
       last_frame = @frames[frame_no]
@@ -76,12 +68,8 @@ class ScoreCard
     if @frames.key?(frame_no + 1)
       next_frame = @frames[frame_no + 1]
       # 2 rolls for this frame?
-      if next_frame.roll_score(SECOND_ROLL)
-        return 10 + next_frame.roll_score(FIRST_ROLL) + next_frame.roll_score(SECOND_ROLL)
-      elsif @frames.key?(frame_no + 2)
-        # Look ahead 2 frames ahead
-        return 10 + next_frame.roll_score(FIRST_ROLL) + @frames[frame_no + 2].roll_score(FIRST_ROLL)
-      end
+      if next_frame.roll_score(SECOND_ROLL); return 10 + next_frame.roll_score(FIRST_ROLL) + next_frame.roll_score(SECOND_ROLL);end
+      if @frames.key?(frame_no + 2); return 10 + next_frame.roll_score(FIRST_ROLL) + @frames[frame_no + 2].roll_score(FIRST_ROLL); end
     end
     # Nothing to match on..
     0

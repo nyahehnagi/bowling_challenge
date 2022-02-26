@@ -14,10 +14,10 @@ describe Frame do
       expect { frame.log_roll(-1) }.to raise_error('Pins downed must be between 0 and 10')
     end
 
-    # it "does not allow rolls greater than what pins are left" do
-    #   frame.log_roll(5)
-    #   expect{frame.log_roll(6)}.to raise_error("Pins downed must be between 0 and 5")
-    # end
+    it "does not allow rolls greater than what pins are left" do
+      frame.log_roll(5)
+      expect{frame.log_roll(6)}.to raise_error("Pins downed must be between 0 and 5")
+    end
   end
 
   context 'no rolls' do

@@ -8,7 +8,6 @@ class Frame
 
   def initialize
     @rolls = {}
-    @frame_total = 0
     @frame_type = nil
   end
 
@@ -16,8 +15,6 @@ class Frame
     raise 'Pins downed must be between 0 and 10' if invalid_pins?(pins_downed)
 
     process_roll(pins_downed)
-    p @rolls
-    p @frame_type
   end
 
   def roll_score(roll)
@@ -39,11 +36,16 @@ class Frame
   private
 
   def invalid_pins?(pins_downed)
-    pins_downed.negative? || pins_downed > 10
+    pins_downed.negative? || pins_downed > TEN_PINS
   end
 
-  def to_many_pins_downed?(pins_downed)
-    (@frame_total - pins_downed).negative?
+  def to_many_pins?(pins_downed)
+    return false if @frame_type == :strike
+    pins_downed > pins_left
+  end
+
+  def pins_left
+    return TEN_PINS - @rolls[FIRST_ROLL]
   end
 
   def process_roll(pins_downed)
@@ -61,7 +63,7 @@ class Frame
 
   def process_second_roll(pins_downed)
     return unless second_roll?
-
+    raise "Pins downed must be between 0 and #{pins_left}" if to_many_pins?(pins_downed)
     @rolls[SECOND_ROLL] = pins_downed
   end
 
