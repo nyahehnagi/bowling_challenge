@@ -52,35 +52,39 @@ describe Frame do
     it "scores a spare on the second roll" do
       frame.log_roll(3)
       frame.log_roll(7)
-      expect(frame.roll_score(2)).to eq :spare
+      expect(frame.spare_frame?).to be true
     end
 
     
     it "scores a spare on the second roll if first roll zero" do
       frame.log_roll(0)
       frame.log_roll(10)
-      expect(frame.roll_score(2)).to eq :spare
+      expect(frame.roll_score(2)).to eq 10
+      expect(frame.spare_frame?).to be true
     end
 
     it "scores a strike on the first roll" do
       frame.log_roll(10)
-      expect(frame.roll_score(1)).to eq :strike
+      expect(frame.roll_score(1)).to eq 10
+      expect(frame.strike_frame?).to be true
     end
 
     it "scores two strikes on 2 rolls" do
       frame.log_roll(10)
       frame.log_roll(10)
-      expect(frame.roll_score(1)).to eq :strike
-      expect(frame.roll_score(2)).to eq :strike
+      expect(frame.roll_score(1)).to eq 10
+      expect(frame.roll_score(2)).to eq 10
+      expect(frame.strike_frame?).to be true
     end
 
     it "scores threes strikes on 3 rolls" do
       frame.log_roll(10)
       frame.log_roll(10)
       frame.log_roll(10)
-      expect(frame.roll_score(1)).to eq :strike
-      expect(frame.roll_score(2)).to eq :strike
-      expect(frame.roll_score(3)).to eq :strike
+      expect(frame.roll_score(1)).to eq 10
+      expect(frame.roll_score(2)).to eq 10
+      expect(frame.roll_score(3)).to eq 10
+      expect(frame.strike_frame?).to be true
     end
 
     xit "scores spare and strikes over 3 rolls" do

@@ -147,23 +147,32 @@ describe ScoreCard do
 
   it "a spare and strike on the last frame of the game" do
     scorecard.log_roll(4)
-    scorecard.log_roll(6)
+    scorecard.log_roll(6) # Spare 1
+
     scorecard.log_roll(5)
-    scorecard.log_roll(5)
+    scorecard.log_roll(5) # Spare 2
+
     scorecard.log_roll(10)
+
     scorecard.log_roll(6)
-    scorecard.log_roll(4)
+    scorecard.log_roll(4) # Spare 3
+
     scorecard.log_roll(3)
     scorecard.log_roll(4)
+
     scorecard.log_roll(5)
-    scorecard.log_roll(5)
+    scorecard.log_roll(5) # Spare 4
+
     scorecard.log_roll(10)
+
     scorecard.log_roll(0)
     scorecard.log_roll(0)
+
     scorecard.log_roll(3)
     scorecard.log_roll(6)
+    
     scorecard.log_roll(7)
-    scorecard.log_roll(3)
+    scorecard.log_roll(3) # Spare 5
     scorecard.log_roll(10)
 
     expect(scorecard.score).to eq 134

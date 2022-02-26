@@ -36,12 +36,12 @@ TEN_PINS_DOWN = 10
 private
 
   def process_frame(frame_no, frame)
-    if strike?(frame.roll_score(FIRST_ROLL))
+    if frame.strike_frame? 
       return strike_points(frame_no)
-    elsif spare?(frame.roll_score(SECOND_ROLL))
+    elsif frame.spare_frame? 
       return spare_points(frame_no)
     else
-      return frame.roll_score(FIRST_ROLL).to_i + frame.roll_score(2).to_i
+      return frame.roll_score(FIRST_ROLL).to_i + frame.roll_score(SECOND_ROLL).to_i
     end
   end
 
@@ -49,9 +49,7 @@ private
     if new_frame?
       @frames[@frames.count + 1] = @frame_class.new
     end
-
     @frames[@frames.keys.last]
-
   end
 
   def new_frame?
@@ -72,18 +70,18 @@ private
   def strike_points(frame_no)
     if frame_no == LAST_FRAME
       last_frame = @frames[frame_no]
-      return 10 + roll_to_int(last_frame.roll_score(SECOND_ROLL), frame_no) + roll_to_int(last_frame.roll_score(FINAL_ROLL), frame_no)
+      return 10 + last_frame.roll_score(SECOND_ROLL) + last_frame.roll_score(FINAL_ROLL)
     end
 
     if @frames.key?(frame_no + 1)
       next_frame = @frames[frame_no + 1]
       # 2 rolls for this frame?
       if (next_frame.roll_score(SECOND_ROLL))
-          return 10 + roll_to_int(next_frame.roll_score(FIRST_ROLL),frame_no + 1) + roll_to_int(next_frame.roll_score(2), frame_no + 1)
+          return 10 + next_frame.roll_score(FIRST_ROLL) + next_frame.roll_score(SECOND_ROLL)
       else
         # Look ahead 2 frames ahead
         if @frames.key?(frame_no + 2)
-          return 10 + roll_to_int(next_frame.roll_score(FIRST_ROLL), frame_no + 1) + roll_to_int(@frames[frame_no + 2].roll_score(FIRST_ROLL), frame_no + 2) 
+          return 10 + next_frame.roll_score(FIRST_ROLL)+ @frames[frame_no + 2].roll_score(FIRST_ROLL) 
         end
       end
     end
@@ -94,20 +92,9 @@ private
   def spare_points(frame_no)
     if frame_no == LAST_FRAME
       last_frame = @frames[frame_no]
-      return roll_to_int(last_frame.roll_score(FINAL_ROLL), frame_no) + TEN_PINS_DOWN 
+      return last_frame.roll_score(FINAL_ROLL) + TEN_PINS_DOWN 
     else
-      @frames.key?(frame_no + 1) ? roll_to_int(@frames[frame_no + 1].roll_score(FIRST_ROLL), frame_no) + TEN_PINS_DOWN : 0
-    end
-  end
-
-  def roll_to_int(roll, frame_no)
-    case roll
-    when :strike 
-      return TEN_PINS_DOWN
-    when :spare 
-      return TEN_PINS_DOWN - @frames[frame_no].roll_score(FIRST_ROLL)
-    else
-      return roll
+      @frames.key?(frame_no + 1) ? @frames[frame_no + 1].roll_score(FIRST_ROLL) + TEN_PINS_DOWN : 0
     end
   end
 
